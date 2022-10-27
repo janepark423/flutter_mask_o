@@ -1,26 +1,27 @@
-class store {
+class Store {
   String? code;
   String? name;
   String? addr;
   String? type;
-  int? lat;
-  int? lng;
+  num? lat;
+  num? lng;
   String? stockAt;
   String? remainStat;
   String? createdAt;
+  num? km;
 
-  store(
-      {this.code,
-      this.name,
-      this.addr,
-      this.type,
-      this.lat,
-      this.lng,
-      this.stockAt,
-      this.remainStat,
-      this.createdAt});
+  Store(
+      {required this.code,
+      required this.name,
+      required this.addr,
+      required this.type,
+      required this.lat,
+      required this.lng,
+      required this.stockAt,
+      required this.remainStat,
+      required this.createdAt});
 
-  store.fromJson(Map<String, dynamic> json) {
+  Store.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     name = json['name'];
     addr = json['addr'];
