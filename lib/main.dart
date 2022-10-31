@@ -22,15 +22,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Store> stores = [];
-
+  final stores = List<Stores>();
   Future fetch() async {
     var url =
         'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json?lat=37.266389&lng=126.999333&m=5000';
@@ -38,12 +35,12 @@ class _MyHomePageState extends State<MyHomePage> {
     var response = await http.get(Uri.parse(url));
 
     final jsonResult = jsonDecode(utf8.decode(response.bodyBytes));
+
     final jsonStores = jsonResult['stores'];
-
     stores.clear();
-
     jsonStores.forEach((e) {
-      stores.add(Store.fromJson(e));
+      Store store = Store.fromJson(e);
+      stores.add(store);
     });
   }
 
@@ -57,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ElevatedButton(
             onPressed: () async {
               await fetch();
-              print(stores.toString());
+              print(stores.length);
             },
             child: Text('테스트')),
       ),
