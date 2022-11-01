@@ -24,17 +24,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _MyHomePageState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final storeModel = Provider.of<StoreModel>(context);
