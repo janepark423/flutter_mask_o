@@ -38,8 +38,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var response = await http.get(Uri.parse(url));
 
-    print('Response status:  + ${response.statusCode}');
-    print('Response body:  + ${jsonDecode(utf8.decode(response.bodyBytes))} ');
+    final jsonResult = jsonDecode(utf8.decode(response.bodyBytes));
+    final jsonStores = jsonResult['stores'];
+
+    stores.clear();
   }
 
   @override
