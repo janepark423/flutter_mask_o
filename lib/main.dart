@@ -30,8 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var isLoading = false;
-
   @override
   void initState() {
     super.initState();
@@ -56,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: isLoading == true
+      body: storeModel.isLoading == true
           ? loadingWidget()
           : ListView(
               children: storeModel.stores.where((e) {
