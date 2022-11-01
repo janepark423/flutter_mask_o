@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var isLoading = true;
+  var isLoading = false;
 
   @override
   void initState() {

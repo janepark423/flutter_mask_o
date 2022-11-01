@@ -8,8 +8,12 @@ class StoreModel with ChangeNotifier {
 
   final _storeRepository = StoreRepository();
 
+  StoreModel() {
+    fetch();
+  }
+
   Future fetch() async {
-    data = await _storeRepository.fetch();
+    stores = await _storeRepository.fetch();
     notifyListeners();
   }
 }
