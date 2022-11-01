@@ -4,7 +4,7 @@ import 'package:flutter_mask/repository/store_repository.dart';
 
 //얘랑 뷰, 모델이랑 직접적 통신
 class StoreModel with ChangeNotifier {
-  List<Store> data = [];
+  List<Store> stores = [];
 
   final _storeRepository = StoreRepository();
 

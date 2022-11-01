@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_mask/viewmodel/store_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_mask/model/store.dart';
+import 'package:flutter_mask/viewmodel/store_model.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(ChangeNotifierProvider.value(
+      value: StoreModel(),
+      child: MyApp(),
+    ));
 
 class MyApp extends StatelessWidget {
   @override
@@ -26,46 +30,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-//final stores = List<Store>();
-  final stores = <Store>[];
   var isLoading = true;
-
-  Future fetch() async {
-    setState(() {
-      isLoading = true;
-    });
-
-//async와 await는 future 함수 안에서만 사용가능하다.
-    var url =
-        'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json';
-    // 'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json?lat=37.266389&lng=126.999333&m=5000';
-
-    var response = await http.get(Uri.parse(url));
-
-    final jsonResult = jsonDecode(utf8.decode(response.bodyBytes));
-    final jsonStores = jsonResult['stores'];
-
-    setState(() {
-      stores.clear();
-      jsonStores.forEach((e) {
-        stores.add(Store.fromJson(e));
-      });
-      isLoading = false;
-    });
-    print('fetch 완료');
-  }
 
   @override
   void initState() {
     super.initState();
-    fetch();
   }
 
   @override
   Widget build(BuildContext context) {
+    final storeModel = Provider.of<StoreModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('마스크 재고 있는 곳 : ${stores.where((e) {
+        title: Text('마스크 재고 있는 곳 : ${storeModel.stores.where((e) {
           return e.remainStat == 'plenty' ||
               e.remainStat == 'some' ||
               e.remainStat == 'few';
@@ -73,14 +50,16 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
-            onPressed: fetch,
+            onPressed: () {
+              storeModel.fetch();
+            },
           )
         ],
       ),
       body: isLoading == true
           ? loadingWidget()
           : ListView(
-              children: stores.where((e) {
+              children: storeModel.stores.where((e) {
                 return e.remainStat == 'plenty' ||
                     e.remainStat == 'some' ||
                     e.remainStat == 'few';
