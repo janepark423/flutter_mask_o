@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -27,21 +27,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final stores = List<Stores>();
+//final stores = List<Store>();
+  final stores = <Store>[];
+
   Future fetch() async {
+//async와 await는 future 함수 안에서만 사용가능하다.
+
     var url =
         'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json?lat=37.266389&lng=126.999333&m=5000';
 
     var response = await http.get(Uri.parse(url));
 
-    final jsonResult = jsonDecode(utf8.decode(response.bodyBytes));
-
-    final jsonStores = jsonResult['stores'];
-    stores.clear();
-    jsonStores.forEach((e) {
-      Store store = Store.fromJson(e);
-      stores.add(store);
-    });
+    print('Response status:  + ${response.statusCode}');
+    print('Response body:  + ${jsonDecode(utf8.decode(response.bodyBytes))} ');
   }
 
   @override
