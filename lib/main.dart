@@ -34,14 +34,26 @@ class _MyHomePageState extends State<MyHomePage> {
 //async와 await는 future 함수 안에서만 사용가능하다.
 
     var url =
-        'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json?lat=37.266389&lng=126.999333&m=5000';
+        'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json';
+    // 'https://gist.githubusercontent.com/junsuk5/bb7485d5f70974deee920b8f0cd1e2f0/raw/063f64d9b343120c2cb01a6555cf9b38761b1d94/sample.json?lat=37.266389&lng=126.999333&m=5000';
 
     var response = await http.get(Uri.parse(url));
 
     final jsonResult = jsonDecode(utf8.decode(response.bodyBytes));
     final jsonStores = jsonResult['stores'];
 
-    stores.clear();
+    setState(() {
+      stores.clear();
+      jsonStores.forEach((e) {
+        stores.add(Store.fromJson(e));
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetch();
   }
 
   @override
@@ -50,13 +62,14 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('마스크 재고 있는 곳 : 0곳'),
       ),
-      body: Center(
-        child: ElevatedButton(
-            onPressed: () async {
-              await fetch();
-              print(stores.length);
-            },
-            child: Text('테스트')),
+      body: ListView(
+        children: stores.map((e) {
+          return ListTile(
+            title: Text(e.name ?? ''),
+            subtitle: Text(e.addr ?? ''),
+            trailing: Text(e.remainStat ?? '매진'),
+          );
+        }).toList(),
       ),
     );
   }
